@@ -16,8 +16,8 @@
   ],
   "tags": [
     {
-      "name": "Authentication",
-      "description": "Endpoint yang berhubungan dengan autentikasi pengguna"
+      "name": "DOKUMENTASI API MAXY ACADEMY HACKATON",
+      "description": "Dokumentasi API JSON"
     }
   ],
   "paths": {
@@ -167,8 +167,184 @@
           }
         }
       }
+    },
+    "/api/users/pending-verification": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get Pending Verification Users",
+        "description": "Mengambil daftar user dengan status verifikasi `pending`.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Halaman keberapa (pagination)."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            },
+            "description": "Jumlah data per halaman."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil ambil data pending users",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "msg": "Berhasil ambil data pending users",
+                  "data": {
+                    "total": 0,
+                    "page": 1,
+                    "totalPage": 0,
+                    "data": []
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request / Parameter tidak valid",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "msg": "Parameter page atau limit tidak valid"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "msg": "Terjadi Kesalahan Pada Server"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{userId}/verification": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "Verifikasi User",
+        "description": "Endpoint untuk admin memverifikasi user (approve/reject).",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "ID user yang ingin diverifikasi."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["approved", "rejected"],
+                    "example": "rejected"
+                  },
+                  "verifikasiNotes": {
+                    "type": "string",
+                    "example": "Data tidak valid, mohon lengkapi data anda"
+                  }
+                },
+                "required": ["status"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User berhasil diverifikasi",
+            "content": {
+              "application/json": {
+                "example": {
+                  "msg": "User Berhasil diverifikasi",
+                  "data": {
+                    "id": "24dfc80c-0e46-430d-a91c-4eb8590c3628",
+                    "namaLengkap": "rendani hutagaol",
+                    "email": "rendani@gmail.com",
+                    "username": "rendaniHutagaol23",
+                    "noTelepon": "089756341212",
+                    "tanggalLahir": "2001-07-20T00:00:00.000Z",
+                    "kota": "Jakarta Barat",
+                    "role": "user",
+                    "avatarUrl": "https://png.pngtree.com/png-vector/20250512/ourmid/pngtree-default-avatar-profile-icon-vector-png-image_16213769.png",
+                    "verifikasiStatus": "rejected",
+                    "verifikasiNotes": "Data tidak valid, mohon lengkapi data anda",
+                    "fotoSim": "/uploads/1758560800925_654245354.jpg",
+                    "alasanBergabung": "Karena Seru dan banyak penggemar",
+                    "verfifiedBy": "afde01ce-5877-4c27-b05d-c1872515ea56",
+                    "verifiedAt": "2025-09-22T18:30:59.996Z",
+                    "createdAt": "2025-09-22T17:06:41.000Z",
+                    "updatedAt": "2025-09-22T18:30:59.997Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (status tidak valid / body salah)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "msg": "Status verifikasi tidak valid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User tidak ditemukan",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "msg": "User tidak ditemukan"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "msg": "Terjadi Kesalahan Pada Server"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
+
   "components": {
     "schemas": {
       "LoginPayload": {
