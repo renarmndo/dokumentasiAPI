@@ -133,6 +133,11 @@
           }
         }
       }
+    },
+    "/api/getData": {
+      "get": {
+        "tags": ["Get Data Profile"]
+      }
     }
   },
   "components": {
