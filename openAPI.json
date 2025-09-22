@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Dokumentasi API Pengguna & Autentikasi",
-    "description": "Dokumentasi ini menyediakan detail untuk endpoint registrasi dan login pengguna.",
+    "description": "Dokumentasi ini menyediakan detail untuk endpoint registrasi dan login pengguna, termasuk upload gambar.",
     "version": "1.0.0",
     "contact": {
       "name": "RENDANI A H HUTAGAOL"
@@ -25,29 +25,62 @@
       "post": {
         "tags": ["Authentication"],
         "summary": "Registrasi Pengguna Baru",
-        "description": "Membuat akun pengguna baru dalam sistem.",
+        "description": "Membuat akun pengguna baru dalam sistem. Mendukung upload gambar SIM.",
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterPayload"
-              },
-              "example": {
-                "namaLengkap": "Rendani Hutagaol",
-                "email": "rendani@gmail.com",
-                "password": "rahasia123",
-                "username": "rendani_h",
-                "noTelepon": "081234567890",
-                "tanggalLahir": "2000-01-01",
-                "kota": "Tangerang Selatan"
+                "type": "object",
+                "properties": {
+                  "namaLengkap": {
+                    "type": "string",
+                    "example": "Rendani Hutagaol"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "rendani@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "123rendani123"
+                  },
+                  "username": { "type": "string", "example": "rendani_h" },
+                  "noTelepon": { "type": "string", "example": "081234567890" },
+                  "tanggalLahir": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2000-01-01"
+                  },
+                  "kota": { "type": "string", "example": "Tangerang Selatan" },
+                  "alasanBergabung": {
+                    "type": "string",
+                    "example": "Karena seru dan banyak penggemar"
+                  },
+                  "fotoSim": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Upload file gambar SIM"
+                  }
+                },
+                "required": [
+                  "namaLengkap",
+                  "email",
+                  "password",
+                  "username",
+                  "noTelepon",
+                  "tanggalLahir",
+                  "kota"
+                ]
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Registrasi berhasil. Data ringkas pengguna baru dikembalikan.",
+            "description": "Registrasi berhasil",
             "content": {
               "application/json": {
                 "schema": {
@@ -57,23 +90,24 @@
                   "success": true,
                   "msg": "Registrasi Berhasil",
                   "data": {
-                    "id": "24253ad7-3e64-49b7-9172-3c94571483c2",
+                    "id": "24dfc80c-0e46-430d-a91c-4eb8590c3628",
                     "role": "user",
-                    "isVerifed": false,
-                    "status": "active",
                     "avatarUrl": "https://png.pngtree.com/png-vector/20250512/ourmid/pngtree-default-avatar-profile-icon-vector-png-image_16213769.png",
-                    "createdAt": "2025-09-22T09:20:20.077Z"
+                    "createdAt": "2025-09-22T17:06:41.464Z"
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Input tidak valid (contoh: email sudah terdaftar, format salah).",
+            "description": "Input tidak valid",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "success": false,
+                  "msg": "Validation error",
+                  "errors": ["Email sudah terdaftar"]
                 }
               }
             }
@@ -90,19 +124,17 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginPayload"
-              },
+              "schema": { "$ref": "#/components/schemas/LoginPayload" },
               "example": {
-                "email": "admin@gmail.com",
-                "password": "admin123"
+                "email": "rendani@gmail.com",
+                "password": "123rendani123"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Login berhasil, mengembalikan data pengguna dan token.",
+            "description": "Login berhasil",
             "content": {
               "application/json": {
                 "schema": {
@@ -112,31 +144,28 @@
                   "success": true,
                   "msg": "Login Berhasil",
                   "data": {
-                    "id": "0e2891de-2e90-4cf9-ab8d-fa6e71108d0e",
-                    "email": "admin@gmail.com",
-                    "name": "admin",
-                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBlMjg5MWRlLTJlOTAtNGNmOS1hYjhkLWZhNmU3MTEwOGQwZSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwibmFtZSI6ImFkbWluIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTg1MzI5NTQsImV4cCI6MTc1ODUzNjU1NH0.xe_RC7F6iFrRvAnFExUQhm3hGQYtsRKMiyw5sWUQbwI"
+                    "id": "24dfc80c-0e46-430d-a91c-4eb8590c3628",
+                    "email": "rendani@gmail.com",
+                    "name": "rendani hutagaol",
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                   }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized. Email atau password salah.",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "success": false,
+                  "msg": "Email atau password salah"
                 }
               }
             }
           }
         }
-      }
-    },
-    "/api/getData": {
-      "get": {
-        "tags": ["Get Data Profile"]
       }
     }
   },
@@ -145,121 +174,39 @@
       "LoginPayload": {
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "format": "password"
-          }
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string", "format": "password" }
         },
         "required": ["email", "password"]
-      },
-      "RegisterPayload": {
-        "type": "object",
-        "properties": {
-          "namaLengkap": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "format": "password",
-            "minLength": 6
-          },
-          "username": {
-            "type": "string"
-          },
-          "noTelepon": {
-            "type": "string"
-          },
-          "tanggalLahir": {
-            "type": "string",
-            "format": "date",
-            "example": "2002-04-21"
-          },
-          "kota": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "namaLengkap",
-          "email",
-          "password",
-          "username",
-          "noTelepon",
-          "tanggalLahir",
-          "kota"
-        ]
-      },
-      "LoginSuccessResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "msg": {
-            "type": "string"
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              },
-              "name": {
-                "type": "string"
-              },
-              "token": {
-                "type": "string",
-                "description": "Bearer token JWT untuk otorisasi."
-              }
-            }
-          }
-        }
       },
       "RegisterSuccessResponse": {
         "type": "object",
         "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "msg": {
-            "type": "string"
-          },
+          "success": { "type": "boolean" },
+          "msg": { "type": "string" },
           "data": {
             "type": "object",
             "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "role": {
-                "type": "string"
-              },
-              "isVerifed": {
-                "type": "boolean"
-              },
-              "status": {
-                "type": "string"
-              },
-              "avatarUrl": {
-                "type": "string",
-                "format": "uri"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              }
+              "id": { "type": "string", "format": "uuid" },
+              "role": { "type": "string" },
+              "avatarUrl": { "type": "string", "format": "uri" },
+              "createdAt": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      },
+      "LoginSuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "msg": { "type": "string" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "format": "uuid" },
+              "email": { "type": "string", "format": "email" },
+              "name": { "type": "string" },
+              "token": { "type": "string", "description": "Bearer JWT Token" }
             }
           }
         }
@@ -267,12 +214,11 @@
       "ErrorResponse": {
         "type": "object",
         "properties": {
-          "success": {
-            "type": "boolean",
-            "example": false
-          },
-          "msg": {
-            "type": "string"
+          "success": { "type": "boolean", "example": false },
+          "msg": { "type": "string" },
+          "errors": {
+            "type": "array",
+            "items": { "type": "string" }
           }
         }
       }
