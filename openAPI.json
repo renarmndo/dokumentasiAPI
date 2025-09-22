@@ -1,0 +1,245 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Dokumentasi API Pengguna & Autentikasi",
+    "description": "Dokumentasi ini menyediakan detail untuk endpoint registrasi dan login pengguna.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://bethann-fractious-flavourfully.ngrok-free.app",
+      "description": "Development Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Endpoint yang berhubungan dengan autentikasi pengguna"
+    }
+  ],
+  "paths": {
+    "/api/register": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Registrasi Pengguna Baru",
+        "description": "Membuat akun pengguna baru dalam sistem.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterPayload"
+              },
+              "example": {
+                "namaLengkap": "admin",
+                "email": "admin@gmail.com",
+                "password": "admin123",
+                "username": "admin231",
+                "noTelepon": "088756431212",
+                "tanggalLahir": "2002-04-21",
+                "kota": "Jakarta"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Registrasi berhasil dan data pengguna baru dikembalikan.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterSuccessResponse"
+                },
+                "example": {
+                  "success": true,
+                  "msg": "Registrasi Berhasil",
+                  "data": {
+                    "id": "0e2891de-2e90-4cf9-ab8d-fa6e71108d0e",
+                    "role": "user",
+                    "isVerifed": false,
+                    "status": "active",
+                    "namaLengkap": "admin",
+                    "email": "admin@gmail.com",
+                    "username": "admin231",
+                    "noTelepon": "088756431212",
+                    "tanggalLahir": "2002-04-21T00:00:00.000Z",
+                    "kota": "Jakarta",
+                    "avatarUrl": "https://png.pngtree.com/png-vector/20250512/ourmid/pngtree-default-avatar-profile-icon-vector-png-image_16213769.png",
+                    "updatedAt": "2025-09-22T07:56:54.399Z",
+                    "createdAt": "2025-09-22T07:56:54.399Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Input tidak valid (contoh: email sudah terdaftar, format salah).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Login Pengguna",
+        "description": "Mengautentikasi pengguna dan mengembalikan token JWT jika berhasil.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginPayload"
+              },
+              "example": {
+                "email": "admin@gmail.com",
+                "password": "admin123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login berhasil, mengembalikan data pengguna dan token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginSuccessResponse"
+                },
+                "example": {
+                  "success": true,
+                  "msg": "Login Berhasil",
+                  "data": {
+                    "id": "0e2891de-2e90-4cf9-ab8d-fa6e71108d0e",
+                    "email": "admin@gmail.com",
+                    "name": "admin",
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBlMjg5MWRlLTJlOTAtNGNmOS1hYjhkLWZhNmU3MTEwOGQwZSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTg1MjkxODEsImV4cCI6MTc1ODUzMjc4MX0.bz5CGWbogvmUWjVdFlL9GHL1O_APbRo3Z_z-xs2Ic7U"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Email atau password salah.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginPayload": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email pengguna yang terdaftar."
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "description": "Password pengguna."
+          }
+        },
+        "required": ["email", "password"]
+      },
+      "RegisterPayload": {
+        "type": "object",
+        "properties": {
+          "namaLengkap": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          },
+          "username": { "type": "string" },
+          "noTelepon": { "type": "string" },
+          "tanggalLahir": {
+            "type": "string",
+            "format": "date",
+            "example": "2002-04-21"
+          },
+          "kota": { "type": "string" }
+        },
+        "required": [
+          "namaLengkap",
+          "email",
+          "password",
+          "username",
+          "noTelepon",
+          "tanggalLahir",
+          "kota"
+        ]
+      },
+      "LoginSuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "msg": { "type": "string", "example": "Login Berhasil" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "format": "uuid" },
+              "email": { "type": "string", "format": "email" },
+              "name": { "type": "string" },
+              "token": {
+                "type": "string",
+                "description": "Bearer token JWT untuk otorisasi."
+              }
+            }
+          }
+        }
+      },
+      "RegisterSuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "msg": { "type": "string", "example": "Registrasi Berhasil" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "format": "uuid" },
+              "role": { "type": "string" },
+              "isVerifed": { "type": "boolean" },
+              "status": { "type": "string" },
+              "namaLengkap": { "type": "string" },
+              "email": { "type": "string", "format": "email" },
+              "username": { "type": "string" },
+              "noTelepon": { "type": "string" },
+              "tanggalLahir": { "type": "string", "format": "date-time" },
+              "kota": { "type": "string" },
+              "avatarUrl": { "type": "string", "format": "uri" },
+              "updatedAt": { "type": "string", "format": "date-time" },
+              "createdAt": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": false },
+          "msg": {
+            "type": "string",
+            "example": "Terjadi kesalahan pada request Anda."
+          }
+        }
+      }
+    }
+  }
+}
