@@ -3,7 +3,10 @@
   "info": {
     "title": "Dokumentasi API Pengguna & Autentikasi",
     "description": "Dokumentasi ini menyediakan detail untuk endpoint registrasi dan login pengguna.",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "contact": {
+      "name": "RENDANI A H HUTAGAOL"
+    }
   },
   "servers": [
     {
@@ -31,20 +34,20 @@
                 "$ref": "#/components/schemas/RegisterPayload"
               },
               "example": {
-                "namaLengkap": "admin",
-                "email": "admin@gmail.com",
-                "password": "admin123",
-                "username": "admin231",
-                "noTelepon": "088756431212",
-                "tanggalLahir": "2002-04-21",
-                "kota": "Jakarta"
+                "namaLengkap": "Rendani Hutagaol",
+                "email": "rendani@gmail.com",
+                "password": "rahasia123",
+                "username": "rendani_h",
+                "noTelepon": "081234567890",
+                "tanggalLahir": "2000-01-01",
+                "kota": "Tangerang Selatan"
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Registrasi berhasil dan data pengguna baru dikembalikan.",
+          "201": {
+            "description": "Registrasi berhasil. Data ringkas pengguna baru dikembalikan.",
             "content": {
               "application/json": {
                 "schema": {
@@ -54,13 +57,12 @@
                   "success": true,
                   "msg": "Registrasi Berhasil",
                   "data": {
-                    "id": "0e2891de-2e90-4cf9-ab8d-fa6e71108d0e",
+                    "id": "24253ad7-3e64-49b7-9172-3c94571483c2",
                     "role": "user",
                     "isVerifed": false,
                     "status": "active",
                     "avatarUrl": "https://png.pngtree.com/png-vector/20250512/ourmid/pngtree-default-avatar-profile-icon-vector-png-image_16213769.png",
-                    "updatedAt": "2025-09-22T07:56:54.399Z",
-                    "createdAt": "2025-09-22T07:56:54.399Z"
+                    "createdAt": "2025-09-22T09:20:20.077Z"
                   }
                 }
               }
@@ -113,7 +115,7 @@
                     "id": "0e2891de-2e90-4cf9-ab8d-fa6e71108d0e",
                     "email": "admin@gmail.com",
                     "name": "admin",
-                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBlMjg5MWRlLTJlOTAtNGNmOS1hYjhkLWZhNmU3MTEwOGQwZSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTg1MjkxODEsImV4cCI6MTc1ODUzMjc4MX0.bz5CGWbogvmUWjVdFlL9GHL1O_APbRo3Z_z-xs2Ic7U"
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBlMjg5MWRlLTJlOTAtNGNmOS1hYjhkLWZhNmU3MTEwOGQwZSIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwibmFtZSI6ImFkbWluIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTg1MzI5NTQsImV4cCI6MTc1ODUzNjU1NH0.xe_RC7F6iFrRvAnFExUQhm3hGQYtsRKMiyw5sWUQbwI"
                   }
                 }
               }
@@ -140,13 +142,11 @@
         "properties": {
           "email": {
             "type": "string",
-            "format": "email",
-            "description": "Email pengguna yang terdaftar."
+            "format": "email"
           },
           "password": {
             "type": "string",
-            "format": "password",
-            "description": "Password pengguna."
+            "format": "password"
           }
         },
         "required": ["email", "password"]
@@ -154,21 +154,32 @@
       "RegisterPayload": {
         "type": "object",
         "properties": {
-          "namaLengkap": { "type": "string" },
-          "email": { "type": "string", "format": "email" },
+          "namaLengkap": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
           "password": {
             "type": "string",
             "format": "password",
             "minLength": 6
           },
-          "username": { "type": "string" },
-          "noTelepon": { "type": "string" },
+          "username": {
+            "type": "string"
+          },
+          "noTelepon": {
+            "type": "string"
+          },
           "tanggalLahir": {
             "type": "string",
             "format": "date",
             "example": "2002-04-21"
           },
-          "kota": { "type": "string" }
+          "kota": {
+            "type": "string"
+          }
         },
         "required": [
           "namaLengkap",
@@ -183,14 +194,26 @@
       "LoginSuccessResponse": {
         "type": "object",
         "properties": {
-          "success": { "type": "boolean", "example": true },
-          "msg": { "type": "string", "example": "Login Berhasil" },
+          "success": {
+            "type": "boolean"
+          },
+          "msg": {
+            "type": "string"
+          },
           "data": {
             "type": "object",
             "properties": {
-              "id": { "type": "string", "format": "uuid" },
-              "email": { "type": "string", "format": "email" },
-              "name": { "type": "string" },
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "name": {
+                "type": "string"
+              },
               "token": {
                 "type": "string",
                 "description": "Bearer token JWT untuk otorisasi."
@@ -202,24 +225,36 @@
       "RegisterSuccessResponse": {
         "type": "object",
         "properties": {
-          "success": { "type": "boolean", "example": true },
-          "msg": { "type": "string", "example": "Registrasi Berhasil" },
+          "success": {
+            "type": "boolean"
+          },
+          "msg": {
+            "type": "string"
+          },
           "data": {
             "type": "object",
             "properties": {
-              "id": { "type": "string", "format": "uuid" },
-              "role": { "type": "string" },
-              "isVerifed": { "type": "boolean" },
-              "status": { "type": "string" },
-              "namaLengkap": { "type": "string" },
-              "email": { "type": "string", "format": "email" },
-              "username": { "type": "string" },
-              "noTelepon": { "type": "string" },
-              "tanggalLahir": { "type": "string", "format": "date-time" },
-              "kota": { "type": "string" },
-              "avatarUrl": { "type": "string", "format": "uri" },
-              "updatedAt": { "type": "string", "format": "date-time" },
-              "createdAt": { "type": "string", "format": "date-time" }
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "role": {
+                "type": "string"
+              },
+              "isVerifed": {
+                "type": "boolean"
+              },
+              "status": {
+                "type": "string"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "format": "uri"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              }
             }
           }
         }
@@ -227,10 +262,12 @@
       "ErrorResponse": {
         "type": "object",
         "properties": {
-          "success": { "type": "boolean", "example": false },
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
           "msg": {
-            "type": "string",
-            "example": "Terjadi kesalahan pada request Anda."
+            "type": "string"
           }
         }
       }
