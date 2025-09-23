@@ -342,6 +342,375 @@
           }
         }
       }
+    },
+    "/api/challengen": {
+      "post": {
+        "summary": "Create a new challenge",
+        "description": "Endpoint untuk membuat challenge baru.",
+        "tags": ["Admin Create Challenge"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Challenge Upload Konten 2"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Upload konten kreatif di TikTok/IG"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2025-09-23 15:25:00"
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2025-09-29 15:27:00"
+                  }
+                },
+                "required": ["title", "description", "startDate", "endDate"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Challenge berhasil dibuat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "msg": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "1f87524b-ab20-40ed-9610-2f6ac938a245"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Challenge Upload Konten 2"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Upload konten kreatif di TikTok/IG"
+                        },
+                        "startDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-09-23T08:25:00.000Z"
+                        },
+                        "endDate": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-09-29T08:27:00.000Z"
+                        },
+                        "adminId": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "0ad41dfd-80ae-4e5b-b95f-41e78cfef413"
+                        },
+                        "bannerUrl": {
+                          "type": ["string", "null"],
+                          "example": null
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "inactive"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-09-23T08:46:56.530Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-09-23T08:46:56.530Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/challenges": {
+      "get": {
+        "summary": "Get all challenges for users",
+        "description": "Mengambil daftar challenge yang tersedia untuk user.",
+        "tags": ["Get Challenge"],
+        "responses": {
+          "200": {
+            "description": "Daftar challenge berhasil diambil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "count": { "type": "integer", "example": 1 },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "1f87524b-ab20-40ed-9610-2f6ac938a245"
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "Challenge Upload Konten 2"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": "Upload konten kreatif di TikTok/IG"
+                          },
+                          "startDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-09-23T08:25:00.000Z"
+                          },
+                          "endDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-09-29T08:27:00.000Z"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "active"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/submissions/{challengeId}": {
+      "post": {
+        "summary": "Submit konten untuk challenge tertentu",
+        "description": "User mengirimkan submission URL untuk challenge berdasarkan challengeId.",
+        "tags": ["Submission"],
+        "parameters": [
+          {
+            "name": "challengeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "1f87524b-ab20-40ed-9610-2f6ac938a245"
+            },
+            "description": "ID challenge yang akan diikuti"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "submissionUrl": {
+                    "type": "string",
+                    "example": "http:///www.tiktok.co.id"
+                  }
+                },
+                "required": ["submissionUrl"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Submission gagal karena user sudah pernah submit sebelumnya",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string",
+                      "example": "Anda Sudah Pernah mengirimkan submission untuk challenge ini"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/submissions/{submissionId}": {
+      "patch": {
+        "summary": "Update submission",
+        "description": "Mengubah data submission berdasarkan submissionId.",
+        "tags": ["Submission"],
+        "parameters": [
+          {
+            "name": "submissionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "b5f4a244-7828-4fa5-81ee-48dc94aa15e5"
+            },
+            "description": "ID dari submission yang akan diperbarui"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "submissionUrl": {
+                    "type": "string",
+                    "example": "Hello Dunia"
+                  }
+                },
+                "required": ["submissionUrl"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Submission berhasil diubah",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string",
+                      "example": "Submission Berhasil Dirubah"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "b5f4a244-7828-4fa5-81ee-48dc94aa15e5"
+                        },
+                        "chalengesId": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "1f87524b-ab20-40ed-9610-2f6ac938a245"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "38181a26-eb1b-4533-b1b7-a87235a2fa1b"
+                        },
+                        "submissionUrl": {
+                          "type": "string",
+                          "example": "Hello Dunia"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "pending"
+                        },
+                        "pointsAwarded": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "reviewedBy": {
+                          "type": ["string", "null"],
+                          "example": null
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-09-23T10:10:18.000Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-09-23T10:58:56.000Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/submissions": {
+      "get": {
+        "summary": "Get all submissions",
+        "description": "Mengambil semua submissions milik user atau sistem.",
+        "tags": ["Submission"],
+        "responses": {
+          "200": {
+            "description": "Data submissions berhasil diambil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string",
+                      "example": "Data Berhasil Didapatkan"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "submissions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "example": "b5f4a244-7828-4fa5-81ee-48dc94aa15e5"
+                              },
+                              "submissionUrl": {
+                                "type": "string",
+                                "example": "http:///www.tiktok.co.id"
+                              },
+                              "status": {
+                                "type": "string",
+                                "example": "pending"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
 
